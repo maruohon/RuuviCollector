@@ -1,0 +1,39 @@
+apply plugin: 'java'
+
+group = 'fi.tkgwf.ruuvi'
+version = '0.2.9'
+
+//description = """"""
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+     maven { url "https://raw.github.com/Scrin/ruuvitag-common-java/mvn-repo/" }
+     maven { url "https://repo.maven.apache.org/maven2" }
+}
+
+dependencies {
+    implementation group: 'fi.tkgwf.ruuvi', name: 'ruuvitag-common', version:'1.0.2'
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version:'3.8.1'
+    implementation group: 'org.apache.commons', name: 'commons-collections4', version:'4.2'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version:'2.17.1'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version:'2.17.1'
+    implementation group: 'log4j', name: 'apache-log4j-extras', version:'1.2.17'
+    implementation group: 'org.influxdb', name: 'influxdb-java', version:'2.14'
+    implementation group: 'io.prometheus', name: 'simpleclient', version:'0.9.0'
+    implementation group: 'io.prometheus', name: 'simpleclient_httpserver', version:'0.9.0'
+    //testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version:'5.3.2'
+}
+
+jar {
+    from {
+        configurations.runtimeClasspath.filter{ it.exists() }.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    manifest {
+        attributes 'Main-Class': 'fi.tkgwf.ruuvi.Main'
+    }
+
+    duplicatesStrategy = 'exclude'
+}

@@ -1,3 +1,5 @@
+.gradle/
+build/
 target/
 /ruuvi-collector.properties
 /ruuvi-names.properties
