@@ -1,16 +1,24 @@
-apply plugin: 'java'
+plugins {
+    id 'application'
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+}
+
+//apply plugin: 'java'
 
 group = 'fi.tkgwf.ruuvi'
-version = '0.2.9'
+project.version = '0.2.9'
 
 //description = """"""
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
-     maven { url "https://raw.github.com/Scrin/ruuvitag-common-java/mvn-repo/" }
-     maven { url "https://repo.maven.apache.org/maven2" }
+    mavenLocal()
+    mavenCentral()
+    //maven { url "https://repo.maven.apache.org/maven2" }
+    maven { url "https://raw.github.com/Scrin/ruuvitag-common-java/mvn-repo/" }
 }
 
 dependencies {
@@ -23,9 +31,21 @@ dependencies {
     implementation group: 'org.influxdb', name: 'influxdb-java', version:'2.14'
     implementation group: 'io.prometheus', name: 'simpleclient', version:'0.9.0'
     implementation group: 'io.prometheus', name: 'simpleclient_httpserver', version:'0.9.0'
-    //testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version:'5.3.2'
+
+    //testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version:'5.3.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
 }
 
+shadowJar {
+    archiveBaseName.set('ruuvi-collector')
+}
+
+application {
+    mainClassName = "fi.tkgwf.ruuvi.Main"
+}
+
+/*
 jar {
     from {
         configurations.runtimeClasspath.filter{ it.exists() }.collect { it.isDirectory() ? it : zipTree(it) }
@@ -37,3 +57,4 @@ jar {
 
     duplicatesStrategy = 'exclude'
 }
+*/
